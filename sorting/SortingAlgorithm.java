@@ -54,6 +54,52 @@ public class SortingAlgorithm<T extends Comparable<T>> {
         }
     }
 
+//    height of tree is log2(n) --> n = 2^0 + 2^1 + 2^2 + ... + 2^h
+//    n = 2^(h+1) - 1
+//    h = log2(n+1) - 1
+//    for each level, we have to do n operations
+//    So, time complexity is O(nlogn)
+//    Space complexity is O(n)
+
+    public void mergeSort(List<T> arr, int low, int high){
+        if(low >= high){
+            return;
+        }
+        int mid = low + (high - low)/2;
+        mergeSort(arr, low, mid);
+        mergeSort(arr, mid+1, high);
+
+//        Now merge
+
+        List<T> tempArr = new ArrayList<>();
+        int i = low, j = mid + 1;
+
+        while(i<=mid && j<=high){
+            if(arr.get(i).compareTo(arr.get(j)) < 0){
+                tempArr.add(arr.get(i));
+                i+=1;
+            }
+            else{
+                tempArr.add(arr.get(j));
+                j+=1;
+            }
+        }
+
+        while(i<=mid){
+            tempArr.add(arr.get(i));
+            i+=1;
+        }
+
+        while(j<=high){
+            tempArr.add(arr.get(j));
+            j+=1;
+        }
+
+        for(int k=low;k<=high;k++){
+            arr.set(k, tempArr.get(k-low));
+        }
+    }
+
     public void printList(List<T> arr){
         System.out.println(arr);
     }
@@ -63,7 +109,8 @@ public class SortingAlgorithm<T extends Comparable<T>> {
         SortingAlgorithm<Integer> sort = new SortingAlgorithm<>();
 //        sort.bubbleSort(arrList);
 //        sort.selectionSort(arrList);
-        sort.insertionSort(arrList);
+//        sort.insertionSort(arrList);
+//        sort.mergeSort(arrList, 0, arrList.size()-1);
         sort.printList(arrList);
     }
 }
